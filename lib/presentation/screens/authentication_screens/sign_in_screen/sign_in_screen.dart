@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_app/core/assets_manager/assets_manager.dart';
+import 'package:movie_app/core/colors_manager/colors_manager.dart';
+import 'package:movie_app/core/routes_manager/routes_manager.dart';
+import 'package:movie_app/core/widgets/custom_elevated_button.dart';
+import 'package:movie_app/core/widgets/custom_text_button.dart';
+import 'package:movie_app/core/widgets/custom_text_form_field.dart';
+import 'package:movie_app/core/widgets/language_widget.dart';
+
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late GlobalKey<FormState> formKey;
+  bool isObscure = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    formKey = GlobalKey<FormState>();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: REdgeInsets.all(19.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+
+              children: [
+                Center(child: Image.asset(AssetsManager.splashImage)),
+                CustomTextFormField(
+                  validator:(value) {
+                    if (value == null || value
+                        .trim()
+                        .isEmpty) {
+                      return "Plz, enter the email";
+                    }
+                    if (!RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value)) {
+                      return "Email is not valid";
+                    }
+                    return null;
+                  } ,
+                    controller : emailController ,
+                    prefixIcon: Icons.email,
+                    hint: 'Email'),
+                SizedBox(height: 22.4.h),
+                CustomTextFormField(
+                  isObscure:isObscure ,
+                  onSuffixIconPressed: (){
+                    isObscure = !isObscure;
+                    setState(() {
+
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value
+                        .trim()
+                        .isEmpty) {
+                      return "Plz, enter the password";
+                    }
+                    if (value
+                        .trim()
+                        .length < 6) {
+                      return "password must be more than 6 letters";
+                    }
+                    return null;
+                  },
+                  controller: passwordController,
+                  prefixIcon: Icons.lock_rounded,
+                  hint: "Password",
+                  suffixIcon: isObscure ? Icons.visibility_off : Icons.visibility,
+                ),
+                SizedBox(height: 18.h),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: CustomTextButton(text: "Forget Password ?", onPress: () {  },),
+                ),
+                SizedBox(height: 36.h),
+                CustomElevatedButton(text: "Login", onPress: () {
+                  if(!formKey.currentState!.validate()) return;
+                },),
+                SizedBox(height: 20.h),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don’t Have Account ?",
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16.sp,
+                        color: ColorsManager.white,
+                      ),
+                    ),
+                    CustomTextButton(text: "Create One", onPress: () {
+                      Navigator.pushNamed(context, RoutesManager.signUp);
+                    },),
+                  ],
+                ),
+                SizedBox(height: 30.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "OR",
+                      style: GoogleFonts.roboto(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.normal,
+                        color: ColorsManager.faintYellow,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30.h),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorsManager.faintYellow,
+                    foregroundColor: ColorsManager.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.r),
+                    ),
+                    padding: REdgeInsets.all(20),
+                    textStyle: GoogleFonts.roboto(
+                      color: ColorsManager.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 20.sp,
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(AssetsManager.googleSVG),
+                      SizedBox(width: 8.w),
+                      Text("login With Google"),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 34.h,),
+
+                LanguageWidget(),
+
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+}
