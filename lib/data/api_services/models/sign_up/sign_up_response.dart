@@ -9,7 +9,13 @@ class SignUpResponse {
       this.data,});
 
   SignUpResponse.fromJson(dynamic json) {
-    message = json['message'];
+    if (json["message"] is List){
+      message = (json['message'] as List).join(", ");
+
+    }else{
+      message = json['message']?.toString();
+
+    }
     data = json['data'] != null ? SignUpData.fromJson(json['data']) : null;
   }
   String? message;

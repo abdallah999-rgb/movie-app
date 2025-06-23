@@ -12,6 +12,7 @@ class SignUpData {
   SignUpData({
       this.email, 
       this.password,
+    this.confirmPassword,
       this.name, 
       this.phone, 
       this.avaterId, 
@@ -23,9 +24,10 @@ class SignUpData {
   SignUpData.fromJson(dynamic json) {
     email = json['email'];
     password = json['password'];
+    confirmPassword= json["confirmPassword"];
     name = json['name'];
     phone = json['phone'];
-    avaterId = json['avaterId'];
+    avaterId = json['avaterId'] ;
     id = json['_id'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -33,9 +35,10 @@ class SignUpData {
   }
   String? email;
   String? password;
+  String? confirmPassword;
   String? name;
   String? phone;
-  int? avaterId;
+  String? avaterId;
   String? id;
   String? createdAt;
   String? updatedAt;
@@ -45,6 +48,7 @@ class SignUpData {
     final map = <String, dynamic>{};
     map['email'] = email;
     map['password'] = password;
+    map["confirmPassword"]= confirmPassword;
     map['name'] = name;
     map['phone'] = phone;
     map['avaterId'] = avaterId;
