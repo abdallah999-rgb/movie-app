@@ -12,4 +12,5 @@ class AssetsManager{
   static const String gamer3 = "assets/images/gamer 3.png";
   static const String america = "assets/images/LR.png";
   static const String egypt = "assets/images/EG (1).png";
+  static const String forgetPassword = "assets/images/Forgot password.png";
 }

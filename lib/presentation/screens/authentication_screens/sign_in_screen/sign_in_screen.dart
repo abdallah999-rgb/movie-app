@@ -9,6 +9,16 @@ import 'package:movie_app/core/widgets/custom_elevated_button.dart';
 import 'package:movie_app/core/widgets/custom_text_button.dart';
 import 'package:movie_app/core/widgets/custom_text_form_field.dart';
 import 'package:movie_app/core/widgets/language_widget.dart';
+import 'package:movie_app/domain/entities/login_entity.dart';
+import 'package:movie_app/provider/data_view_model/data_view_model.dart';
+
+import '../../../../data/api_services/api_services.dart';
+import '../../../../data/data_souce_impl/auth_api.dart';
+import '../../../../data/data_souce_impl/login_api.dart';
+import '../../../../data/repo_impl/authentication_repo_impl.dart';
+import '../../../../data/repo_impl/login_rep_impl.dart';
+import '../../../../domain/use_cases/login_use_cases.dart';
+import '../../../../domain/use_cases/sign_up_use_cases.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -18,6 +28,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  late DataViewModel dataViewModel;
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late GlobalKey<FormState> formKey;
@@ -26,6 +37,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadData();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     formKey = GlobalKey<FormState>();
@@ -36,6 +48,10 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+  void loadData(){
+    dataViewModel = DataViewModel(signUpUseCases: SignUpUseCases(repositories: AuthRepoImpl(authDataSource: AuthApiDataSourceImpl(apiServices: ApiServices()))), loginUseCases: LoginUseCases(loginRepository: LoginRepoImpl(loginDataSource: LoginApiDataSource(apiServices: ApiServices()))));
+
   }
   @override
   Widget build(BuildContext context) {
@@ -97,11 +113,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(height: 18.h),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: CustomTextButton(text: "Forget Password ?", onPress: () {  },),
+                  child: CustomTextButton(text: "Forget Password ?", onPress: () {
+                    Navigator.pushNamed(context, RoutesManager.resetPassword);
+                  },),
                 ),
                 SizedBox(height: 36.h),
                 CustomElevatedButton(text: "Login", onPress: () {
-                  if(!formKey.currentState!.validate()) return;
+                  login();
                 },),
                 SizedBox(height: 20.h),
 
@@ -171,5 +189,11 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+void login()async{
+  if(!formKey.currentState!.validate()) return;
+  LoginEntity existedUser = LoginEntity(email: emailController.text, password: passwordController.text);
+ await  dataViewModel.loginUser(existedUser);
 
+
+}
 }

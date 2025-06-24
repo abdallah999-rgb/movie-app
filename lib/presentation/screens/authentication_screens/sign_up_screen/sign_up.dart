@@ -8,8 +8,11 @@ import 'package:movie_app/core/widgets/custom_text_form_field.dart';
 import 'package:movie_app/core/widgets/language_widget.dart';
 import 'package:movie_app/data/api_services/api_services.dart';
 import 'package:movie_app/data/data_souce_impl/auth_api.dart';
+import 'package:movie_app/data/data_souce_impl/login_api.dart';
 import 'package:movie_app/data/repo_impl/authentication_repo_impl.dart';
+import 'package:movie_app/data/repo_impl/login_rep_impl.dart';
 import 'package:movie_app/domain/entities/sign_up_entity.dart';
+import 'package:movie_app/domain/use_cases/login_use_cases.dart';
 import 'package:movie_app/domain/use_cases/sign_up_use_cases.dart';
 import 'package:movie_app/provider/data_view_model/data_view_model.dart';
 import '../../../../core/routes_manager/routes_manager.dart';
@@ -48,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     formKey = GlobalKey<FormState>();
   }
  void loadData(){
-    dataViewModel = DataViewModel(signUpUseCases: SignUpUseCases(repositories: AuthRepoImpl(authDataSource: AuthApiDataSourceImpl(apiServices: ApiServices()))));
+    dataViewModel = DataViewModel(signUpUseCases: SignUpUseCases(repositories: AuthRepoImpl(authDataSource: AuthApiDataSourceImpl(apiServices: ApiServices()))), loginUseCases: LoginUseCases(loginRepository: LoginRepoImpl(loginDataSource: LoginApiDataSource(apiServices: ApiServices()))));
 
  }
   @override

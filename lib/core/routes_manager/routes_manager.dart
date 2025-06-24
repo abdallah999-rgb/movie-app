@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:movie_app/presentation/screens/authentication_screens/reset_password/reset_password.dart';
 import 'package:movie_app/presentation/screens/authentication_screens/sign_in_screen/sign_in_screen.dart';
 import 'package:movie_app/presentation/screens/authentication_screens/sign_up_screen/sign_up.dart';
 import 'package:movie_app/presentation/screens/home_screen/home_page.dart';
@@ -11,6 +12,7 @@ class RoutesManager{
   static const String onBoarding = "/on boarding";
   static const String signUp = "/sign up";
   static const String home = "/home";
+  static const String resetPassword = "/reset";
 
   static Route? router (RouteSettings settings){
     switch(settings.name){
@@ -19,6 +21,7 @@ class RoutesManager{
       case onBoarding : return CupertinoPageRoute(builder: (context) => OnboardingScreens(),);
       case signUp : return CupertinoPageRoute(builder: (context) => SignUpScreen(),);
       case home : return CupertinoPageRoute(builder: (context) => HomePage(),);
+      case resetPassword : return CupertinoPageRoute(builder: (context) => ResetPassword(),);
     }
     return null;
   }
