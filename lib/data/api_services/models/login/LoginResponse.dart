@@ -1,4 +1,3 @@
-import 'package:movie_app/data/api_services/models/sign_up/sign_up_data.dart';
 
 /// message : "Success Login"
 /// data : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NWE2MDMyYzEzMDExOWIxMjM3MTAzYyIsImVtYWlsIjoibWFoOTlAZ21haWwuY29tIiwiaWF0IjoxNzUwNzUzMzcxfQ.hez9Cgi4y8o7cDG3DGChpr8KvfGKT25ZIKvBo6x-OwI"
@@ -8,8 +7,14 @@ class LoginResponse {
       this.message,
       this.data,});
 
+
+
   LoginResponse.fromJson(dynamic json) {
-    message = json['message'];
+    if (json["message"] is List) {
+      message = (json['message'] as List).join(", ");
+    } else {
+      message = json['message']?.toString();
+    }
     data = json['data'];
   }
   String? message;

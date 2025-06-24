@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +7,7 @@ import 'package:movie_app/core/assets_manager/assets_manager.dart';
 import 'package:movie_app/core/colors_manager/colors_manager.dart';
 import 'package:movie_app/core/widgets/custom_elevated_button.dart';
 import 'package:movie_app/core/widgets/custom_text_form_field.dart';
+import 'package:movie_app/core/widgets/dialog_utils.dart';
 import 'package:movie_app/core/widgets/language_widget.dart';
 import 'package:movie_app/data/api_services/api_services.dart';
 import 'package:movie_app/data/data_souce_impl/auth_api.dart';
@@ -15,8 +18,10 @@ import 'package:movie_app/domain/entities/sign_up_entity.dart';
 import 'package:movie_app/domain/use_cases/login_use_cases.dart';
 import 'package:movie_app/domain/use_cases/sign_up_use_cases.dart';
 import 'package:movie_app/provider/data_view_model/data_view_model.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/routes_manager/routes_manager.dart';
 import '../../../../core/widgets/custom_text_button.dart';
+import '../../../../data/api_services/models/sign_up/sign_up_response.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -56,163 +61,168 @@ class _SignUpScreenState extends State<SignUpScreen> {
  }
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(title: Text("Register")),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: 30.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return ChangeNotifierProvider.value(
 
-                    children: [
-                      Image.asset(AssetsManager.gamer3),
-                      Image.asset(AssetsManager.gamer1),
-                      Image.asset(AssetsManager.gamer2),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Avatar",style: GoogleFonts.roboto(color: ColorsManager.yellow,fontSize: 18.sp,fontWeight: FontWeight.w500),),
-                    ],
-                  ),
-                  SizedBox(height: 14.h,),
-                  CustomTextFormField(
-                    prefixIcon: Icons.perm_identity,
-                    hint: "Name",
-                    controller: nameController,
-                    validator: (value){
-                      if (value == null || value.trim().isEmpty){
-                        return "Plz, Enter Your Name";
-                      }
-                      if ( value.length < 6){
-                        return "your Name Must be More Than 6 letters";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 24.h,),
-                  CustomTextFormField(
-                    prefixIcon: Icons.email,
-                    hint: "Email",
-                    controller: emailController,
-                    validator: (value){
-                      if (value == null || value.trim().isEmpty){
-                        return "Plz, Enter Your Email";
-                      }
-                      if (!RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
-                        return "Email is not valid";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 24.h,),
+      value: dataViewModel,
+      child: Form(
+        key: formKey,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(title: Text("Register")),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 30.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                  CustomTextFormField(
-                    isObscure:isPasswordObscure ,
-                    onSuffixIconPressed:(){
-                      isPasswordObscure = !isPasswordObscure;
-                      setState(() {
+                      children: [
+                        Image.asset(AssetsManager.gamer3),
+                        Image.asset(AssetsManager.gamer1),
+                        Image.asset(AssetsManager.gamer2),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Avatar",style: GoogleFonts.roboto(color: ColorsManager.yellow,fontSize: 18.sp,fontWeight: FontWeight.w500),),
+                      ],
+                    ),
+                    SizedBox(height: 14.h,),
+                    CustomTextFormField(
+                      prefixIcon: Icons.perm_identity,
+                      hint: "Name",
+                      controller: nameController,
+                      validator: (value){
+                        if (value == null || value.trim().isEmpty){
+                          return "Plz, Enter Your Name";
+                        }
+                        if ( value.length < 6){
+                          return "your Name Must be More Than 6 letters";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 24.h,),
+                    CustomTextFormField(
+                      prefixIcon: Icons.email,
+                      hint: "Email",
+                      controller: emailController,
+                      validator: (value){
+                        if (value == null || value.trim().isEmpty){
+                          return "Plz, Enter Your Email";
+                        }
+                        if (!RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                          return "Email is not valid";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 24.h,),
 
-                      });
-                    },
-                    prefixIcon: Icons.lock,
-                    suffixIcon: isPasswordObscure? Icons.visibility_off: Icons.visibility,
-                    hint: "Password",
-                    controller: passwordController,
-                    validator: (value){
-                      if (value == null || value.trim().isEmpty){
-                        return "Plz, Enter Your Password";
-                      }
-                      if ( value.length < 6){
-                        return "your Password Must be More Than 6 letters";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 24.h,),
+                    CustomTextFormField(
+                      isObscure:isPasswordObscure ,
+                      onSuffixIconPressed:(){
+                        isPasswordObscure = !isPasswordObscure;
+                        setState(() {
 
-                  CustomTextFormField(
-                    isObscure: isConfirmedPasswordObscure,
-                    onSuffixIconPressed: (){
-                      isConfirmedPasswordObscure = !isConfirmedPasswordObscure;
-                      setState(() {
+                        });
+                      },
+                      prefixIcon: Icons.lock,
+                      suffixIcon: isPasswordObscure? Icons.visibility_off: Icons.visibility,
+                      hint: "Password",
+                      controller: passwordController,
+                      validator: (value){
+                        if (value == null || value.trim().isEmpty){
+                          return "Plz, Enter Your Password";
+                        }
+                        if ( value.length < 6){
+                          return "your Password Must be More Than 6 letters";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 24.h,),
 
-                      });
-                    },
-                    prefixIcon: Icons.perm_identity,
-                    suffixIcon:isConfirmedPasswordObscure? Icons.visibility_off : Icons.visibility,
-                    hint: "Confirm Password",
-                    controller: confirmPasswordController,
-                    validator: (value){
-                      if (value == null || value.trim().isEmpty){
-                        return "Plz, Enter  Your Confirmed Password";
-                      }
-                      if ( value != passwordController.text){
-                        return "your Confirm Password Does Not Match Your Password";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 24.h,),
+                    CustomTextFormField(
+                      isObscure: isConfirmedPasswordObscure,
+                      onSuffixIconPressed: (){
+                        isConfirmedPasswordObscure = !isConfirmedPasswordObscure;
+                        setState(() {
 
-                  CustomTextFormField(
-                    prefixIcon: Icons.phone,
-                    hint: "Phone Number",
-                    controller: phoneController,
-                    validator: (value){
-                      if (value == null || value.trim().isEmpty){
-                        return "Plz, Enter Your Phone Number";
-                      }
-                      if ( !RegExp(r"^(\+201|01|00201)[0-2,5]{1}[0-9]{8}").hasMatch(value)){
-                        return "your Number does not match with egypt phone numbers";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 24.h,),
-                  CustomElevatedButton(
-                    text: "Create Account",
-                    onPress: ()  {
-                     createAccount();
+                        });
+                      },
+                      prefixIcon: Icons.perm_identity,
+                      suffixIcon:isConfirmedPasswordObscure? Icons.visibility_off : Icons.visibility,
+                      hint: "Confirm Password",
+                      controller: confirmPasswordController,
+                      validator: (value){
+                        if (value == null || value.trim().isEmpty){
+                          return "Plz, Enter  Your Confirmed Password";
+                        }
+                        if ( value != passwordController.text){
+                          return "your Confirm Password Does Not Match Your Password";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 24.h,),
 
-                    },
-                  ),
+                    CustomTextFormField(
+                      prefixIcon: Icons.phone,
+                      hint: "Phone Number",
+                      controller: phoneController,
+                      validator: (value){
+                        if (value == null || value.trim().isEmpty){
+                          return "Plz, Enter Your Phone Number";
+                        }
+                        if ( !RegExp(r"^(\+201|01|00201)[0-2,5]{1}[0-9]{8}").hasMatch(value)){
+                          return "your Number does not match with egypt phone numbers";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 24.h,),
+                    CustomElevatedButton(
+                      text: "Create Account",
+                      onPress: ()  {
+                        createAccount();
 
-                  SizedBox(height: 18.h,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already Have Account ?",
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16.sp,
-                          color: ColorsManager.white,
+
+                      },
+                    ),
+
+                    SizedBox(height: 18.h,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Already Have Account ?",
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16.sp,
+                            color: ColorsManager.white,
+                          ),
                         ),
-                      ),
-                      CustomTextButton(text: "Login", onPress: () {
-                        Navigator.pushNamed(context, RoutesManager.signIn);
-                      },),
+                        CustomTextButton(text: "Login", onPress: () {
+                          Navigator.pushNamed(context, RoutesManager.signIn);
+                        },),
 
 
-                    ],
-                  ),
-                SizedBox(height: 18.h,),
-                  LanguageWidget()
+                      ],
+                    ),
+                  SizedBox(height: 18.h,),
+                    LanguageWidget()
 
-                ],
+                  ],
 
 
+                ),
               ),
             ),
           ),
@@ -220,8 +230,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-  void createAccount()async{
+ void createAccount()async{
     // kvjn
+
     if (!formKey.currentState!.validate()) return;
 
     SignUpEntity user = SignUpEntity(
@@ -233,7 +244,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
       avaterId: 1,
     );
 
-   await dataViewModel.createUser(user);
-    print("success-----------------------------------------------------");
+     await dataViewModel.createUser(user);
+    var state = dataViewModel.createUserState;
+    switch(state) {
+      case SuccessCreateUserState():
+          DialogUtils.showLoadingDialog(context);
+          await dataViewModel.createUser(user);
+          DialogUtils.hideDialog(context);
+           DialogUtils.showMessageDialog(context, "Sign Up Successfully",posButton: "OK", posAction: () {
+            Navigator.pushReplacementNamed(context, RoutesManager.home);
+
+        });
+      case LoadingCreateUserState():
+         DialogUtils.hideDialog(context);
+
+      case ErrorCreateUserState():
+
+        DialogUtils.showLoadingDialog(context);
+        await dataViewModel.createUser(user);
+        DialogUtils.hideDialog(context);
+        DialogUtils.showMessageDialog(context, ApiServices.registerError);
+
+
+    }
+
+
+   }
+
+
+
   }
-}
+
+

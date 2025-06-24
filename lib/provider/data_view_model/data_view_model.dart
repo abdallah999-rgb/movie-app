@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/result.dart';
+import 'package:movie_app/core/widgets/dialog_utils.dart';
 import 'package:movie_app/data/api_services/models/login/LoginResponse.dart';
 import 'package:movie_app/domain/entities/login_entity.dart';
 import 'package:movie_app/domain/entities/sign_up_entity.dart';
@@ -11,7 +14,7 @@ SignUpUseCases signUpUseCases;
 LoginUseCases loginUseCases;
 DataViewModel({required this.signUpUseCases,required this.loginUseCases});
 
-CreateUserState createUserState = LoadingCreateUserState();
+ CreateUserState createUserState= LoadingCreateUserState();
 LoginUserState loginUserState = LoadingLoginUserState();
 void changeCreateUserState(CreateUserState newState){
   createUserState = newState;
@@ -23,17 +26,18 @@ void changeLoginUserState(LoginUserState newState){
 }
 
 Future<void> createUser(SignUpEntity user)async{
-  createUserState = LoadingCreateUserState();
-  notifyListeners();
+ changeCreateUserState(LoadingCreateUserState());
   var result = await signUpUseCases.invoke(user);
+
+  notifyListeners();
   switch(result) {
     case Success<SignUpEntity>():
-      print("--------------------------------------------");
-     changeCreateUserState(SuccessCreateUserState(user: result.data));
+    changeCreateUserState(SuccessCreateUserState(user: result.data));
     case ServerError<SignUpEntity>():
-     changeCreateUserState(ErrorCreateUserState(serverError: result));
+      log(result.message);
+     changeCreateUserState(ErrorCreateUserState(serverError: result.message));
     case GeneralException<SignUpEntity>():
-      changeCreateUserState(ErrorCreateUserState(generalException:result.exception ));
+     changeCreateUserState(ErrorCreateUserState(generalException:result.exception ));
 
   }
 }
@@ -45,9 +49,11 @@ Future<void> loginUser(LoginEntity existedUser)async{
       changeLoginUserState(SuccessLoginUserState(existedUser:result.data ));
 
     case ServerError<LoginResponse>():
-      changeLoginUserState(ErrorLoginUserState(serverError: result));
+      log(result.message);
+      changeLoginUserState(ErrorLoginUserState(serverError: result.message));
 
     case GeneralException<LoginResponse>():
+      log(result.exception.toString());
       changeLoginUserState(ErrorLoginUserState(generalException: result.exception));
 
   }
@@ -68,11 +74,12 @@ SuccessCreateUserState({required this.user});
 class LoadingCreateUserState extends CreateUserState{
   String? loadingMessage;
   LoadingCreateUserState({ this.loadingMessage});
+
 }
 
 
 class ErrorCreateUserState extends CreateUserState{
-  ServerError? serverError;
+  String? serverError;
   Exception? generalException;
   ErrorCreateUserState({ this.serverError, this.generalException});
 }
@@ -93,7 +100,7 @@ class LoadingLoginUserState extends LoginUserState{
 
 
 class ErrorLoginUserState extends LoginUserState{
-  ServerError? serverError;
+  String? serverError;
   Exception? generalException;
   ErrorLoginUserState({ this.serverError, this.generalException});
 }

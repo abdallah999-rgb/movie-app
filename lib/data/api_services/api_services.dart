@@ -12,6 +12,8 @@ class ApiServices {
   static const String _baseUrl = "route-movie-apis.vercel.app";
   static const String _registerEndPoint = "auth/register";
   static const String _loginEndPoint = "auth/login";
+  static late String registerError;
+  static late String loginError;
 
   Future<Result<SignUpData>> signUp(SignUpEntity user) async {
     try {
@@ -24,30 +26,32 @@ class ApiServices {
           "email": user.email,
           "password": user.password,
           "confirmPassword": user.confirmPassword,
-          "phone": user.phone,
+          "phone": "+2${user.phone}",
           "avaterId": 1,
         }),
       );
       var json = jsonDecode(response.body);
       SignUpResponse signUpResponse = SignUpResponse.fromJson(json);
-      if (response.statusCode == 200) {
+
+
+      if (signUpResponse.message == "User created successfully") {
+
+
         return Success(data: signUpResponse.data!);
       } else {
         log(signUpResponse.message!);
+        registerError = signUpResponse.message!;
 
         return ServerError(message: signUpResponse.message!);
       }
     } on Exception catch (e) {
-      print(
-        "success++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
-      );
+
 
       return GeneralException(exception: e);
     }
   }
 
   Future<Result<LoginResponse>> login(LoginEntity existedUser) async {
-
     try{
       Uri url = Uri.https(_baseUrl, _loginEndPoint);
       http.Response response = await http.post(
@@ -62,10 +66,10 @@ class ApiServices {
       var json = jsonDecode(response.body);
       LoginResponse loginResponse = LoginResponse.fromJson(json);
       if(response.statusCode == 200){
-        print("0000000000000000000000000000000000000000000000000000");
-        print(loginResponse.data);
+
         return Success(data: loginResponse);
       }else{
+        loginError = loginResponse.message!;
         return ServerError(message: loginResponse.message!);
       }
     } on Exception catch(e){

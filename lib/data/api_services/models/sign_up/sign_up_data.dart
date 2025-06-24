@@ -38,7 +38,7 @@ class SignUpData {
   String? confirmPassword;
   String? name;
   String? phone;
-  String? avaterId;
+  int? avaterId;
   String? id;
   String? createdAt;
   String? updatedAt;
