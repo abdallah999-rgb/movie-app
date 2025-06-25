@@ -1,12 +1,4 @@
-/// email : "mahmoud@gmail.com"
-/// password : "$2b$10$FE3BP9l5NCNTozfEfi3q1ePhZqlfi0yKO5D5FgWxpv2Z7YVWoSsQS"
-/// name : "mahmoud abdallah"
-/// phone : "+201018116784"
-/// avaterId : 1
-/// _id : "6857e1a8bb7f9635ef2f9776"
-/// createdAt : "2025-06-22T10:57:44.721Z"
-/// updatedAt : "2025-06-22T10:57:44.721Z"
-/// __v : 0
+
 
 class SignUpData {
   SignUpData({
