@@ -9,19 +9,22 @@ class MovieApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
     return ScreenUtilInit(
       designSize: Size(430, 932),
       splitScreenMode: true,
       minTextAdapt: true,
 
-      builder: (context, child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: RoutesManager.router,
-        initialRoute: RoutesManager.splash,
-        darkTheme: ThemeManager.dark,
-        themeMode: ThemeMode.dark,
-      ),
+      builder:
+          (context, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: RoutesManager.router,
+            initialRoute: RoutesManager.home,
+            darkTheme: ThemeManager.dark,
+            themeMode: ThemeMode.dark,
+          ),
     );
   }
 }
