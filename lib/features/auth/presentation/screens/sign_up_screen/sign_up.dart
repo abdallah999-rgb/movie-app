@@ -45,7 +45,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Image.asset(AssetsManager.gamer3,fit: BoxFit.fitHeight,),
   ];
   int avatarId = 0;
-
   @override
   void initState() {
     // TODO: implement initState
