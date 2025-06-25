@@ -42,7 +42,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   List<Image> avatars=[
     Image.asset(AssetsManager.gamer1,scale: 1.7,fit: BoxFit.fitHeight,),
     Image.asset(AssetsManager.gamer2,fit: BoxFit.fitHeight,),
-    Image.asset(AssetsManager.gamer3,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer4,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer5,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer6,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer7,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer8,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer9,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer10,fit: BoxFit.fitHeight,),
+
   ];
   int avatarId = 0;
   @override
