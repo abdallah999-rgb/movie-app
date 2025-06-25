@@ -10,6 +10,13 @@ class AssetsManager{
   static const String gamer1 = "assets/images/gamer (1).png";
   static const String gamer2 = "assets/images/gamer 2.png";
   static const String gamer3 = "assets/images/gamer 3.png";
+  static const String gamer4 = "assets/images/gamer 4.png";
+  static const String gamer5 = "assets/images/gamer 5.png";
+  static const String gamer6 = "assets/images/gamer 6.png";
+  static const String gamer7 = "assets/images/gamer 7.png";
+  static const String gamer8 = "assets/images/gamer 8.png";
+  static const String gamer9 = "assets/images/gamer 9.png";
+  static const String gamer10 = "assets/images/gamer 10.png";
   static const String america = "assets/images/LR.png";
   static const String egypt = "assets/images/EG (1).png";
   static const String forgetPassword = "assets/images/Forgot password.png";
