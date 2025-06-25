@@ -270,13 +270,14 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
 
-  loginWithGoogle()async{
+  loginWithGoogle(){
    try{
-     DialogUtils.showLoadingDialog(context);
 
-     await loginWithGoogle();
-     DialogUtils.hideDialog(context);
-     DialogUtils.showMessageDialog(context, "content");
+
+      AuthServices.loginWithGoogle();
+     DialogUtils.showMessageDialog(context, "login Successfully",posButton: "Ok",posAction: () {
+       Navigator.pushReplacementNamed(context, RoutesManager.home);
+     },);
 
 
    }catch (e){

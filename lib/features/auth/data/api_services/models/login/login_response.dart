@@ -1,7 +1,4 @@
 
-/// message : "Success Login"
-/// data : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NWE2MDMyYzEzMDExOWIxMjM3MTAzYyIsImVtYWlsIjoibWFoOTlAZ21haWwuY29tIiwiaWF0IjoxNzUwNzUzMzcxfQ.hez9Cgi4y8o7cDG3DGChpr8KvfGKT25ZIKvBo6x-OwI"
-
 class LoginResponse {
   LoginResponse({
       this.message,
