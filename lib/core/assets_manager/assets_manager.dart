@@ -1,4 +1,4 @@
-class AssetsManager{
+class AssetsManager {
   static const String splashImage = "assets/images/splash.png";
   static const String onboarding1 = "assets/images/onboarding1.png";
   static const String onboarding2 = "assets/images/onboarding2.png";
@@ -13,4 +13,11 @@ class AssetsManager{
   static const String america = "assets/images/LR.png";
   static const String egypt = "assets/images/EG (1).png";
   static const String forgetPassword = "assets/images/Forgot password.png";
+}
+
+class AssetsMangerIcons {
+  static const String home = "assets/icons/home.svg";
+  static const String search = "assets/icons/search.svg";
+  static const String browse = "assets/icons/browse.svg";
+  static const String profile = "assets/icons/profile.svg";
 }
