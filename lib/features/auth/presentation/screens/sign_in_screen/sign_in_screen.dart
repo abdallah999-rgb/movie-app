@@ -9,6 +9,7 @@ import 'package:movie_app/core/widgets/custom_elevated_button.dart';
 import 'package:movie_app/core/widgets/custom_text_button.dart';
 import 'package:movie_app/core/widgets/custom_text_form_field.dart';
 import 'package:movie_app/core/widgets/language_widget.dart';
+import 'package:movie_app/features/auth/data/api_services/auth_services.dart';
 import 'package:movie_app/features/auth/domain/entities/login_entity.dart';
 import 'package:movie_app/features/auth/presentation/provider/data_view_model/data_view_model.dart';
 import 'package:provider/provider.dart';
@@ -210,7 +211,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         fontSize: 20.sp,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      loginWithGoogle();
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -264,5 +267,22 @@ class _SignInScreenState extends State<SignInScreen> {
         DialogUtils.hideDialog(context);
         DialogUtils.showMessageDialog(context, "Email Or Password is Wrong");
     }
+  }
+
+
+  loginWithGoogle(){
+   try{
+
+
+      AuthServices.loginWithGoogle();
+     DialogUtils.showMessageDialog(context, "login Successfully",posButton: "Ok",posAction: () {
+       Navigator.pushReplacementNamed(context, RoutesManager.home);
+     },);
+
+
+   }catch (e){
+     DialogUtils.showMessageDialog(context, e.toString());
+   }
+
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,7 @@ import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
 import 'package:movie_app/features/auth/domain/use_cases/login_use_cases.dart';
 import 'package:movie_app/features/auth/domain/use_cases/sign_up_use_cases.dart';
 import 'package:movie_app/features/auth/presentation/provider/data_view_model/data_view_model.dart';
+import 'package:movie_app/features/auth/presentation/widgets/avatar_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/routes_manager/routes_manager.dart';
 import '../../../../../core/widgets/custom_text_button.dart';
@@ -37,7 +39,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isPasswordObscure = false;
   bool isConfirmedPasswordObscure = false;
   late DataViewModel dataViewModel;
-
+  List<Image> avatars=[
+    Image.asset(AssetsManager.gamer1,scale: 1.7,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer2,fit: BoxFit.fitHeight,),
+    Image.asset(AssetsManager.gamer3,fit: BoxFit.fitHeight,),
+  ];
+  int avatarId = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -64,6 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+    log("$avatarId");
   }
 
   @override
@@ -76,22 +84,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Scaffold(
             appBar: AppBar(title: Text("Register")),
             body: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding:  REdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 30.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    AvatarWidget(avatars: avatars, onPageChanged: (index, reason) {
+                      avatarId = index;
+                      log("$avatarId");
+                    },),
+                    SizedBox(height: 10.h,),
 
-                      children: [
-                        Image.asset(AssetsManager.gamer3),
-                        Image.asset(AssetsManager.gamer1),
-                        Image.asset(AssetsManager.gamer2),
-                      ],
-                    ),
-                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -171,7 +175,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             !isConfirmedPasswordObscure;
                         setState(() {});
                       },
-                      prefixIcon: Icons.perm_identity,
+                      prefixIcon: Icons.lock,
                       suffixIcon:
                           isConfirmedPasswordObscure
                               ? Icons.visibility_off
@@ -257,16 +261,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       password: passwordController.text,
       confirmPassword: confirmPasswordController.text,
       phone: phoneController.text,
-      avaterId: 1,
+      avaterId: avatarId,
     );
-
+    DialogUtils.showLoadingDialog(context);
     await dataViewModel.createUser(user);
+    DialogUtils.hideDialog(context);
+
     var state = dataViewModel.createUserState;
     switch (state) {
       case SuccessCreateUserState():
-        DialogUtils.showLoadingDialog(context);
-        await dataViewModel.createUser(user);
-        DialogUtils.hideDialog(context);
         DialogUtils.showMessageDialog(
           context,
           "Sign Up Successfully",
@@ -276,12 +279,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           },
         );
       case LoadingCreateUserState():
-        DialogUtils.hideDialog(context);
+        DialogUtils.showLoadingDialog(context);
 
       case ErrorCreateUserState():
-        DialogUtils.showLoadingDialog(context);
-        await dataViewModel.createUser(user);
-        DialogUtils.hideDialog(context);
+
         DialogUtils.showMessageDialog(context, ApiServices.registerError);
     }
   }

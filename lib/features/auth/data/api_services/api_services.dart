@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/core/result.dart';
-import 'package:movie_app/features/auth/data/api_services/models/login/LoginResponse.dart';
+import 'package:movie_app/features/auth/data/api_services/models/login/login_response.dart';
 import 'package:movie_app/features/auth/data/api_services/models/sign_up/sign_up_data.dart';
 import 'package:movie_app/features/auth/data/api_services/models/sign_up/sign_up_response.dart';
 import 'package:movie_app/features/auth/domain/entities/login_entity.dart';

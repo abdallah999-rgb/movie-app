@@ -665,7 +665,7 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
                           SizedBox(height: 24.h),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                 context,
                                 RoutesManager.signUp,
                               );
