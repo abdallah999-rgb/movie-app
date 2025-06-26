@@ -17,7 +17,7 @@ class SearchProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-Future<void> search (String query)async{
+ search (String query)async{
 
 searchState = LoadingSearchState();
 notifyListeners();

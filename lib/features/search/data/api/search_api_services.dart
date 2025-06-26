@@ -11,13 +11,14 @@ static const String _endPoint = "/api/v2/list_movies.json";
   Future<Result<List<Movie>>> search(String query)async{
     try{
       Uri url = Uri.https(_baseUrl,_endPoint,{
-        "q": query
+        "query_term": query,
+
       });
       http.Response response = await http.get(url);
       var json =   jsonDecode(response.body);
       MoviesResponse moviesResponse = MoviesResponse.fromJson(json);
       if(moviesResponse.status == "ok"){
-        return Success(data: moviesResponse.data!.movies!);
+        return Success(data: moviesResponse.data!.movies?? []);
       }else{
         return ServerError(message: moviesResponse.statusMessage!);
       }

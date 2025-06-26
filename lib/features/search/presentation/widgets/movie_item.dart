@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie_app/core/assets_manager/assets_manager.dart';
 import 'package:movie_app/core/colors_manager/colors_manager.dart';
 import 'package:movie_app/features/search/domain/entities/movie_entity.dart';
 

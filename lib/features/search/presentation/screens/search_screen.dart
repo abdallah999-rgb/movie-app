@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,6 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   autocorrect: true,
                   onChanged: (value) {
                     searchProvider.search(value);
+                    searchProvider.searchListener = value;
                   },
                   cursorColor: ColorsManager.white,
                   style: GoogleFonts.roboto(
@@ -124,6 +124,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 SizedBox(height: 16.h),
                 Consumer<SearchProvider>(
                   builder: (context, searchProvider, child) {
+
                     if (searchProvider.searchListener.isEmpty) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -138,33 +139,34 @@ class _SearchScreenState extends State<SearchScreen> {
                       var state = searchProvider.searchState;
                       switch (state) {
                         case SuccessSearchState():
-                          return Expanded(
-                            child: GridView.builder(
+                          return GridView.builder(
 
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                            itemCount: searchProvider.movies.length,
+                            itemBuilder:
+                                (context, index) => Padding(
+                                  padding:  REdgeInsets.all(6),
+                                  child: MovieItem(
+                                    movieEntity: searchProvider.movies[index],
                                   ),
-                              itemCount: searchProvider.movies.length,
-                              itemBuilder:
-                                  (context, index) => Padding(
-                                    padding:  REdgeInsets.all(6),
-                                    child: MovieItem(
-                                      movieEntity: searchProvider.movies[index],
-                                    ),
-                                  ),
-                            ),
+                                ),
                           );
                         case LoadingSearchState():
                           return Center(child: CircularProgressIndicator());
 
                         case ErrorSearchState():
-                          return Text(
-                            "Error",
-                            style: GoogleFonts.roboto(
-                              color: ColorsManager.white,
+                          return Center(
+                            child: Text(
+                               "Some Thing Went Wrong",
+                              style: GoogleFonts.roboto(
+                                fontSize: 18.sp,
+                                color: ColorsManager.white,
+                              ),
                             ),
                           );
                       }
