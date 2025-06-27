@@ -4,7 +4,7 @@ import 'package:movie_app/features/auth/data/api_services/models/login/login_res
 import 'package:movie_app/features/auth/data/data_source/login_data_source.dart';
 import 'package:movie_app/features/auth/domain/entities/login_entity.dart';
 
-class LoginApiDataSource extends LoginDataSource {
+class LoginApiDataSource implements LoginDataSource {
   ApiServices apiServices;
   LoginApiDataSource({required this.apiServices});
   @override

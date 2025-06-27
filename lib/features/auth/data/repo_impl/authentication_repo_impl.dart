@@ -4,7 +4,7 @@ import 'package:movie_app/features/auth/data/data_source/auth_data_source.dart';
 import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
 import 'package:movie_app/features/auth/domain/repositories/authentication_repositories.dart';
 
-class AuthRepoImpl extends AuthRepositories {
+class AuthRepoImpl implements AuthRepositories {
   AuthDataSource authDataSource;
   AuthRepoImpl({required this.authDataSource});
 

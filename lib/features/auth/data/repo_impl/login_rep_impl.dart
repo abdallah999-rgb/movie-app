@@ -4,7 +4,7 @@ import 'package:movie_app/features/auth/data/data_source/login_data_source.dart'
 import 'package:movie_app/features/auth/domain/entities/login_entity.dart';
 import 'package:movie_app/features/auth/domain/repositories/login_repository.dart';
 
-class LoginRepoImpl extends LoginRepository {
+class LoginRepoImpl implements LoginRepository {
   LoginDataSource loginDataSource;
   LoginRepoImpl({required this.loginDataSource});
   @override

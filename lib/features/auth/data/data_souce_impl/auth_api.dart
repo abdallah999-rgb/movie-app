@@ -5,7 +5,7 @@ import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
 
 import '../api_services/api_services.dart';
 
-class AuthApiDataSourceImpl extends AuthDataSource {
+class AuthApiDataSourceImpl implements AuthDataSource {
   ApiServices apiServices;
   AuthApiDataSourceImpl({required this.apiServices});
   @override

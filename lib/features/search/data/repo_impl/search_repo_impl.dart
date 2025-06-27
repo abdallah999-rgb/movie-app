@@ -4,7 +4,7 @@ import 'package:movie_app/features/search/data/models/Movie.dart';
 import 'package:movie_app/features/search/domain/entities/movie_entity.dart';
 import 'package:movie_app/features/search/domain/repo/search_repo.dart';
 
-class SearchRepoImpl extends SearchRepo {
+class SearchRepoImpl implements SearchRepo {
   SearchDataSource searchDataSource;
   SearchRepoImpl({required this.searchDataSource});
 
