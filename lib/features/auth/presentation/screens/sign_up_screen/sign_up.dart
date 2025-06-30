@@ -4,18 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/assets_manager/assets_manager.dart';
 import 'package:movie_app/core/colors_manager/colors_manager.dart';
+import 'package:movie_app/core/dependency_injection/dio.dart';
 import 'package:movie_app/core/widgets/custom_elevated_button.dart';
 import 'package:movie_app/core/widgets/custom_text_form_field.dart';
 import 'package:movie_app/core/widgets/dialog_utils.dart';
 import 'package:movie_app/core/widgets/language_widget.dart';
 import 'package:movie_app/features/auth/data/api_services/api_services.dart';
-import 'package:movie_app/features/auth/data/data_souce_impl/auth_api.dart';
-import 'package:movie_app/features/auth/data/data_souce_impl/login_api.dart';
-import 'package:movie_app/features/auth/data/repo_impl/authentication_repo_impl.dart';
-import 'package:movie_app/features/auth/data/repo_impl/login_rep_impl.dart';
 import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
-import 'package:movie_app/features/auth/domain/use_cases/login_use_cases.dart';
-import 'package:movie_app/features/auth/domain/use_cases/sign_up_use_cases.dart';
 import 'package:movie_app/features/auth/presentation/provider/data_view_model/data_view_model.dart';
 import 'package:movie_app/features/auth/presentation/widgets/avatar_widget.dart';
 import 'package:provider/provider.dart';
@@ -66,18 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void loadData() {
-    dataViewModel = DataViewModel(
-      signUpUseCases: SignUpUseCases(
-        repositories: AuthRepoImpl(
-          authDataSource: AuthApiDataSourceImpl(apiServices: ApiServices()),
-        ),
-      ),
-      loginUseCases: LoginUseCases(
-        loginRepository: LoginRepoImpl(
-          loginDataSource: LoginApiDataSource(apiServices: ApiServices()),
-        ),
-      ),
-    );
+    dataViewModel = getIt<DataViewModel>();
     log("$avatarId");
   }
 

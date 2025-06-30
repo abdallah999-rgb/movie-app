@@ -4,12 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/assets_manager/assets_manager.dart';
 import 'package:movie_app/core/colors_manager/colors_manager.dart';
-import 'package:movie_app/features/search/data/api/search_api_services.dart';
-import 'package:movie_app/features/search/data/data_sourc_impl/search_api_data_source_impl.dart';
-import 'package:movie_app/features/search/data/repo_impl/search_repo_impl.dart';
-import 'package:movie_app/features/search/domain/use_cases/search_use_case.dart';
+import 'package:movie_app/core/dependency_injection/dio.dart';
 import 'package:movie_app/features/search/presentation/widgets/movie_item.dart';
-import 'package:movie_app/features/search/provider/search_provider.dart';
+import 'package:movie_app/features/search/provider/search_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -22,7 +19,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   String clean = "";
   late TextEditingController searchController;
-  late SearchProvider searchProvider;
+  late SearchViewModel searchProvider;
 
   @override
   void initState() {
@@ -33,15 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   loadDate() {
-    searchProvider = SearchProvider(
-      searchUseCase: SearchUseCase(
-        searchRepo: SearchRepoImpl(
-          searchDataSource: SearchApiDataSourceImpl(
-            searchApiServices: SearchApiServices(),
-          ),
-        ),
-      ),
-    );
+    searchProvider = getIt<SearchViewModel>();
   }
 
   @override
@@ -122,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                Consumer<SearchProvider>(
+                Consumer<SearchViewModel>(
                   builder: (context, searchProvider, child) {
 
                     if (searchProvider.searchListener.isEmpty) {

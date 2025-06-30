@@ -1,16 +1,18 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/core/result.dart';
 import 'package:movie_app/features/auth/data/api_services/models/login/login_response.dart';
 import 'package:movie_app/features/auth/domain/entities/login_entity.dart';
 import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
 import 'package:movie_app/features/auth/domain/use_cases/login_use_cases.dart';
 import 'package:movie_app/features/auth/domain/use_cases/sign_up_use_cases.dart';
-
+@injectable
 class DataViewModel extends ChangeNotifier {
   SignUpUseCases signUpUseCases;
   LoginUseCases loginUseCases;
+  @factoryMethod
   DataViewModel({required this.signUpUseCases, required this.loginUseCases});
 
   CreateUserState createUserState = LoadingCreateUserState();

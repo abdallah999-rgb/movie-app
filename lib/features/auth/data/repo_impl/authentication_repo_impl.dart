@@ -1,11 +1,13 @@
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/core/result.dart';
 import 'package:movie_app/features/auth/data/api_services/models/sign_up/sign_up_data.dart';
 import 'package:movie_app/features/auth/data/data_source/auth_data_source.dart';
 import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
 import 'package:movie_app/features/auth/domain/repositories/authentication_repositories.dart';
-
+@Injectable(as:AuthRepositories )
 class AuthRepoImpl implements AuthRepositories {
   AuthDataSource authDataSource;
+  @factoryMethod
   AuthRepoImpl({required this.authDataSource});
 
   @override

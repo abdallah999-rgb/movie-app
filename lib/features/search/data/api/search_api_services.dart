@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/core/result.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/features/search/data/models/MoviesResponse.dart';
 import '../models/Movie.dart';
 
+@singleton
 class SearchApiServices{
 static const String _baseUrl = "yts.mx";
 static const String _endPoint = "/api/v2/list_movies.json";

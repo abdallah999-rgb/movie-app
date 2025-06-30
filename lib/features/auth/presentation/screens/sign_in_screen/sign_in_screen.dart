@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/assets_manager/assets_manager.dart';
 import 'package:movie_app/core/colors_manager/colors_manager.dart';
+import 'package:movie_app/core/dependency_injection/dio.dart';
 import 'package:movie_app/core/routes_manager/routes_manager.dart';
 import 'package:movie_app/core/widgets/custom_elevated_button.dart';
 import 'package:movie_app/core/widgets/custom_text_button.dart';
@@ -15,13 +16,6 @@ import 'package:movie_app/features/auth/presentation/provider/data_view_model/da
 import 'package:provider/provider.dart';
 
 import '../../../../../core/widgets/dialog_utils.dart';
-import '../../../data/api_services/api_services.dart';
-import '../../../data/data_souce_impl/auth_api.dart';
-import '../../../data/data_souce_impl/login_api.dart';
-import '../../../data/repo_impl/authentication_repo_impl.dart';
-import '../../../data/repo_impl/login_rep_impl.dart';
-import '../../../domain/use_cases/login_use_cases.dart';
-import '../../../domain/use_cases/sign_up_use_cases.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -55,18 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void loadData() {
-    dataViewModel = DataViewModel(
-      signUpUseCases: SignUpUseCases(
-        repositories: AuthRepoImpl(
-          authDataSource: AuthApiDataSourceImpl(apiServices: ApiServices()),
-        ),
-      ),
-      loginUseCases: LoginUseCases(
-        loginRepository: LoginRepoImpl(
-          loginDataSource: LoginApiDataSource(apiServices: ApiServices()),
-        ),
-      ),
-    );
+    dataViewModel = getIt<DataViewModel>();
   }
 
   @override
