@@ -1,13 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 import 'package:movie_app/core/result.dart';
 import 'package:movie_app/features/search/domain/entities/movie_entity.dart';
 import 'package:movie_app/features/search/domain/use_cases/search_use_case.dart';
 
-class SearchProvider extends ChangeNotifier{
+@injectable
+class SearchViewModel extends ChangeNotifier{
   SearchUseCase searchUseCase;
-  SearchProvider({required this.searchUseCase});
+  @factoryMethod
+  SearchViewModel({required this.searchUseCase});
   String searchListener = "";
 
   List<MovieEntity>movies =[];
