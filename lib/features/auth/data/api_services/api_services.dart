@@ -8,6 +8,7 @@ import 'package:movie_app/features/auth/data/api_services/models/sign_up/sign_up
 import 'package:movie_app/features/auth/data/api_services/models/sign_up/sign_up_response.dart';
 import 'package:movie_app/features/auth/domain/entities/login_entity.dart';
 import 'package:movie_app/features/auth/domain/entities/sign_up_entity.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @singleton
 class ApiServices {
@@ -29,7 +30,7 @@ class ApiServices {
           "password": user.password,
           "confirmPassword": user.confirmPassword,
           "phone": "+2${user.phone}",
-          "avaterId": 1,
+          "avaterId": user.avaterId,
         }),
       );
       var json = jsonDecode(response.body);
@@ -49,6 +50,7 @@ class ApiServices {
   }
 
   Future<Result<LoginResponse>> login(LoginEntity existedUser) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       Uri url = Uri.https(_baseUrl, _loginEndPoint);
       http.Response response = await http.post(
@@ -63,6 +65,9 @@ class ApiServices {
       var json = jsonDecode(response.body);
       LoginResponse loginResponse = LoginResponse.fromJson(json);
       if (response.statusCode == 200) {
+        prefs.setString("token", loginResponse.data!);
+        log("${loginResponse.data}");
+
         return Success(data: loginResponse);
       } else {
         loginError = loginResponse.message!;

@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Image.asset(AssetsManager.gamer7,fit: BoxFit.fitHeight,),
     Image.asset(AssetsManager.gamer8,fit: BoxFit.fitHeight,),
     Image.asset(AssetsManager.gamer9,fit: BoxFit.fitHeight,),
-    Image.asset(AssetsManager.gamer10,fit: BoxFit.fitHeight,),
+
 
   ];
   int avatarId = 0;
